@@ -10,7 +10,11 @@ export type PoseKey =
   | "lunge"
   | "twist"
   | "seated"
-  | "supine";
+  | "supine"
+  | "chair-squat"
+  | "bird-dog"
+  | "hip-hinge"
+  | "carry-march";
 
 export type Tone = { bg: string; ink: string };
 
@@ -26,6 +30,10 @@ export const POSE_TONES: Record<PoseKey, Tone> = {
   twist: { bg: "bg-pose-lilac", ink: "stroke-ink" },
   seated: { bg: "bg-pose-mustard", ink: "stroke-ink" },
   supine: { bg: "bg-pose-slate", ink: "stroke-white" },
+  "chair-squat": { bg: "bg-pose-mustard", ink: "stroke-ink" },
+  "bird-dog": { bg: "bg-pose-navy", ink: "stroke-white" },
+  "hip-hinge": { bg: "bg-pose-brick", ink: "stroke-white" },
+  "carry-march": { bg: "bg-pose-forest", ink: "stroke-white" },
 };
 
 /** Simplified stroke figures — a mat line plus a body, drawn in a 48px box. */
@@ -88,6 +96,38 @@ export const POSE_FIGURES: Record<PoseKey, ReactNode> = {
     <>
       <path d="M13 33 L28 33 Q34 33 34 26" />
       <circle cx="11" cy="30" r="3.2" />
+    </>
+  ),
+  "chair-squat": (
+    <>
+      {/* Chair behind, figure sitting back toward it. */}
+      <path d="M31 38 L31 27 L43 27 M43 27 L43 14" />
+      <path d="M14 18 L16 27 L25 28 L25 38" />
+      <path d="M15 21 L24 20" />
+      <circle cx="13" cy="14" r="3.2" />
+    </>
+  ),
+  "bird-dog": (
+    <>
+      <path d="M17 25 L31 25" />
+      <path d="M19 25 L18 35 M29 25 L30 35" />
+      <path d="M17 25 L7 21 M31 25 L42 30" />
+      <circle cx="14" cy="21" r="2.8" />
+    </>
+  ),
+  "hip-hinge": (
+    <>
+      <path d="M27 38 L27 26 L17 21" />
+      <path d="M19 22 L8 24" />
+      <circle cx="14" cy="17" r="3.2" />
+    </>
+  ),
+  "carry-march": (
+    <>
+      <path d="M24 15 L24 27 M24 27 L24 38 M24 27 L31 27 L31 34" />
+      <circle cx="24" cy="11" r="3.2" />
+      {/* Weights held at the sides. */}
+      <path d="M16 23 L16 29 M34 23 L34 29" />
     </>
   ),
 };

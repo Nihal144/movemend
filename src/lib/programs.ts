@@ -65,22 +65,22 @@ export const PROGRAMS: Program[] = [
   {
     slug: "lift-grandkids",
     headline: "Lift your grandkids with ease",
-    promise: "Build the core that carries you.",
+    promise: "Build the strength to get down, get up and carry.",
     detail:
-      "Daily core work built around real lifting — bracing, hinging and standing back up with something in your arms.",
-    minutesPerDay: 15,
+      "The same ten-minute session every day: five movements covering hips, legs, core and balance — the combination behind getting to the floor, standing back up, lifting and carrying.",
+    minutesPerDay: 10,
     days: 14,
     tone: "core",
     goals: ["strength"],
-    areas: ["lower-back", "posture"],
+    areas: ["lower-back", "posture", "hips"],
+    // A fixed daily protocol rather than a rotating block.
     block: [
-      { title: "Deep Core", focus: "Find the brace", exercises: ["supine", "bridge", "child", "cobra", "seated", "twist", "fold"] },
-      { title: "Anti-Rotation", focus: "Resist the twist", exercises: ["twist", "bridge", "lunge", "reach", "supine", "downdog", "child"] },
-      { title: "Hip Hinge", focus: "Lift from the hips, not the back", exercises: ["fold", "lunge", "bridge", "downdog", "seated", "cobra", "supine"] },
-      { title: "Overhead", focus: "Strength above your head", exercises: ["reach", "cobra", "lunge", "downdog", "twist", "bridge", "child"] },
-      { title: "Split Stance", focus: "Steady on one leg", exercises: ["lunge", "reach", "bridge", "fold", "child", "supine", "seated"] },
-      { title: "Full Chain", focus: "Link top to bottom", exercises: ["downdog", "cobra", "bridge", "lunge", "reach", "twist", "fold"] },
-      { title: "Recover", focus: "Let the work consolidate", exercises: ["child", "supine", "seated", "twist", "fold", "bridge", "cobra"] },
+      {
+        title: "Strong Enough to Carry Them",
+        focus: "Hips, legs, core and balance for everyday lifting",
+        seconds: 120,
+        exercises: ["chair-squat", "bridge", "bird-dog", "hip-hinge", "carry-march"],
+      },
     ],
   },
   {
@@ -100,7 +100,7 @@ export const PROGRAMS: Program[] = [
     // exercises every day, which is how paced-breathing programmes are run.
     block: [
       {
-        title: "BP & Breathing",
+        title: "Breathe Better",
         focus: "Calm the nervous system and slow the breath",
         seconds: 120,
         exercises: ["diaphragmatic", "four-six", "box-gentle", "pursed-lip", "long-exhale"],

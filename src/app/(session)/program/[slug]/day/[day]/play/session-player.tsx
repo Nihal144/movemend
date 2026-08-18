@@ -34,7 +34,7 @@ export function SessionPlayer({ program, session }: { program: Program; session:
 
   if (finished) {
     return (
-      <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-5 px-6 text-center">
+      <main className="mx-auto flex h-dvh w-full max-w-md flex-col items-center justify-center gap-5 px-6 text-center">
         <span className="grid size-16 place-items-center rounded-full bg-brand-soft text-2xl text-brand">
           ✓
         </span>
@@ -53,7 +53,7 @@ export function SessionPlayer({ program, session }: { program: Program; session:
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col px-6 pb-8 pt-4">
+    <main className="mx-auto flex h-dvh w-full max-w-md flex-col px-6 pt-4">
       <header className="flex items-center gap-3">
         <button
           type="button"
@@ -80,19 +80,40 @@ export function SessionPlayer({ program, session }: { program: Program; session:
         </span>
       </header>
 
-      <div className="pt-5">
-        <ExerciseMedia exercise={current} paused={paused} />
+      {/* Instructions can run long, so the body scrolls under fixed controls. */}
+      <div className="min-h-0 flex-1 overflow-y-auto pb-4">
+        <div className="mx-auto w-full max-w-[min(100%,34vh)] pt-5">
+          <ExerciseMedia exercise={current} paused={paused} />
+        </div>
+
+        {/* Keyed on the exercise so each one starts a fresh timer. */}
+        <ExerciseTimer key={index} seconds={session.seconds} paused={paused} onDone={advance} />
+
+        <h1 className="pt-5 text-3xl font-bold tracking-tight" aria-live="polite">
+          {exercise.name}
+        </h1>
+        <p className="pt-2 text-[15px] leading-relaxed text-muted">{exercise.description}</p>
+
+        {exercise.steps && (
+          <ol className="flex flex-col gap-2 pt-4">
+            {exercise.steps.map((step, i) => (
+              <li key={i} className="flex gap-3 text-[15px] leading-relaxed text-muted">
+                <span className="mt-[0.6rem] size-1.5 shrink-0 rounded-full bg-hairline" />
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        )}
+
+        {exercise.why && (
+          <p className="mt-5 rounded-2xl bg-surface p-4 text-sm leading-relaxed text-muted">
+            <span className="font-semibold text-ink">Why: </span>
+            {exercise.why}
+          </p>
+        )}
       </div>
 
-      {/* Keyed on the exercise so each one starts a fresh timer. */}
-      <ExerciseTimer key={index} seconds={session.seconds} paused={paused} onDone={advance} />
-
-      <h1 className="pt-5 text-3xl font-bold tracking-tight" aria-live="polite">
-        {exercise.name}
-      </h1>
-      <p className="pt-2 text-[15px] leading-relaxed text-muted">{exercise.description}</p>
-
-      <div className="mt-auto flex items-center gap-3 pt-8">
+      <div className="sticky bottom-0 flex items-center gap-3 bg-canvas pb-6 pt-3">
         <button
           type="button"
           onClick={() => setIndex((i) => Math.max(0, i - 1))}

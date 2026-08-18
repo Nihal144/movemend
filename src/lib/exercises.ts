@@ -23,6 +23,10 @@ export type BreathPhase = {
 export type Exercise = {
   name: string;
   description: string;
+  /** Step-by-step instructions, listed under the description. */
+  steps?: string[];
+  /** Why the exercise earns its place in the session. */
+  why?: string;
   /** Optional looping demo (GIF/MP4) from /public; overrides the illustration. */
   media?: string;
   /** Pose exercises render the figure illustration. */
@@ -59,9 +63,16 @@ const POSE_EXERCISES: Record<PoseKey, Omit<Exercise, "pose">> = {
       "Lie face down with hands under your shoulders. Press up gently until you feel a stretch across the front of your hips, not a pinch in your back.",
   },
   bridge: {
-    name: "Glute Bridge",
-    description:
-      "On your back with knees bent, push through your heels and lift your hips until your body makes a straight line from knee to shoulder.",
+    name: "Glute Bridges",
+    description: "Hip lifts from the floor, working the glutes without loading the spine.",
+    steps: [
+      "Lie on your back with knees bent.",
+      "Feet flat on the floor.",
+      "Tighten your core.",
+      "Squeeze your glutes and lift your hips.",
+      "Lower slowly, then repeat.",
+    ],
+    why: "Strengthens glutes and hips, which are what actually do the lifting and carrying.",
   },
   reach: {
     name: "Overhead Reach",
@@ -87,6 +98,56 @@ const POSE_EXERCISES: Record<PoseKey, Omit<Exercise, "pose">> = {
     name: "Constructive Rest",
     description:
       "Lie on your back with knees bent and feet flat. Let your whole spine settle into the floor and slow your breathing down.",
+  },
+  "chair-squat": {
+    name: "Chair Squats",
+    description: "Sitting back to a chair and standing again — the everyday get-up, rehearsed.",
+    steps: [
+      "Stand in front of a sturdy chair.",
+      "Feet approximately hip-width apart.",
+      "Push your hips backward and lower toward the chair.",
+      "Lightly touch the chair.",
+      "Stand up by pushing through your feet.",
+      "Keep your chest lifted.",
+    ],
+    why: "Builds the leg and hip strength needed to lift a child from a low position.",
+  },
+  "bird-dog": {
+    name: "Bird Dog",
+    description: "Opposite arm and leg extended from all fours, holding the trunk still.",
+    steps: [
+      "Start on hands and knees.",
+      "Brace your stomach gently.",
+      "Extend the opposite arm and leg.",
+      "Return to the starting position.",
+      "Alternate sides.",
+    ],
+    why: "Develops core stability, hip control and coordination without heavy spinal loading.",
+  },
+  "hip-hinge": {
+    name: "Hip Hinge + Reach",
+    description: "The bend-and-return pattern that keeps your back out of the lift.",
+    steps: [
+      "Stand with feet hip-width apart.",
+      "Slightly bend the knees.",
+      "Push your hips backward, keeping your back neutral.",
+      "Return to standing and reach your arms forward and up.",
+      "Repeat slowly.",
+    ],
+    why: "Teaches the right way to pick a child up off the floor — bending through the hips rather than rounding the back.",
+  },
+  "carry-march": {
+    name: "Supported Carry / March",
+    description:
+      "Marching on the spot holding a light weight — dumbbells, water bottles or any household object.",
+    steps: [
+      "Stand tall and hold the weight close to your body.",
+      "Slowly march in place.",
+      "Keep your ribs stacked over your hips.",
+      "Maintain an upright posture.",
+      "If balance is an issue, stay next to a sturdy support.",
+    ],
+    why: "Develops the core stability, grip, hip strength and balance that carrying actually demands.",
   },
 };
 
