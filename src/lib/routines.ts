@@ -59,15 +59,3 @@ export const AREAS: Area[] = [
   { slug: "neck", label: "Neck", pose: "twist" },
   { slug: "posture", label: "Posture", pose: "lunge" },
 ];
-
-/**
- * Ranks routines by how many of the user's sore areas they cover, so the hero
- * card reflects the questionnaire instead of always showing the same routine.
- */
-export function rankRoutines(areas: string[]): Routine[] {
-  if (!areas.length) return ROUTINES;
-  return [...ROUTINES].sort((a, b) => {
-    const score = (r: Routine) => r.areas.filter((x) => areas.includes(x)).length;
-    return score(b) - score(a);
-  });
-}

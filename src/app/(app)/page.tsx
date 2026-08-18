@@ -2,13 +2,11 @@
 
 import Link from "next/link";
 import { PoseAvatar } from "@/components/pose-avatar";
+import { ProgramCard } from "@/components/program-card";
 import { firstName } from "@/lib/profile";
-import { AREAS, rankRoutines, type Routine } from "@/lib/routines";
+import { rankPrograms } from "@/lib/programs";
+import { AREAS } from "@/lib/routines";
 import { useProfileGate } from "@/lib/use-profile";
-
-/** Grid slots that hold a pose; every other cell renders as a pale dot. */
-const POSE_SLOTS = [2, 3, 6, 7, 8, 11, 12];
-const GRID_CELLS = 20;
 
 export default function TodayPage() {
   const { profile, ready } = useProfileGate();
@@ -17,7 +15,8 @@ export default function TodayPage() {
 
   const answers = profile?.answers ?? {};
   const areas = Array.isArray(answers.areas) ? (answers.areas as string[]) : [];
-  const routines = rankRoutines(areas);
+  const goal = typeof answers.goal === "string" ? answers.goal : undefined;
+  const programs = rankPrograms(goal, areas);
   const name = firstName(profile);
 
   const now = new Date();
@@ -57,8 +56,8 @@ export default function TodayPage() {
 
       {/* Edge-bleeding snap rail, so the next card peeks in from the right. */}
       <section className="-mx-6 mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 no-scrollbar">
-        {routines.map((routine) => (
-          <RoutineCard key={routine.slug} routine={routine} />
+        {programs.map((program) => (
+          <ProgramCard key={program.slug} program={program} />
         ))}
       </section>
 
@@ -81,38 +80,5 @@ export default function TodayPage() {
         ))}
       </ul>
     </main>
-  );
-}
-
-function RoutineCard({ routine }: { routine: Routine }) {
-  const slots = POSE_SLOTS.slice(0, routine.poses.length);
-
-  return (
-    <Link
-      href={`/routine/${routine.slug}`}
-      className="w-[85%] shrink-0 snap-center rounded-card bg-surface p-6 shadow-[0_2px_20px_rgba(0,0,0,0.05)] transition active:scale-[0.99]"
-    >
-      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
-        {routine.minutes} minutes
-      </p>
-      <h3 className="mt-1 text-3xl font-bold tracking-tight">{routine.title}</h3>
-
-      <div className="mt-5 grid grid-cols-5 gap-2.5" aria-hidden="true">
-        {Array.from({ length: GRID_CELLS }, (_, cell) => {
-          const poseIndex = slots.indexOf(cell);
-          return poseIndex === -1 ? (
-            <span key={cell} className="aspect-square rounded-full bg-canvas" />
-          ) : (
-            <PoseAvatar
-              key={cell}
-              pose={routine.poses[poseIndex]}
-              className="aspect-square w-full"
-            />
-          );
-        })}
-      </div>
-
-      <p className="mt-5 text-sm text-muted">{routine.blurb}</p>
-    </Link>
   );
 }

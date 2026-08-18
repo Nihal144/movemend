@@ -22,6 +22,14 @@
   --color-pose-mustard: #e8c452;
   --color-pose-slate: #7f8b80;
 
+  /* Per-program colour washes for the home rail statement cards. */
+  --color-program-back: #e8ded2;
+  --color-program-back-ink: #5c4632;
+  --color-program-core: #d9e4d5;
+  --color-program-core-ink: #2f4a36;
+  --color-program-calm: #dbe4ee;
+  --color-program-calm-ink: #2f4257;
+
   --radius-card: 2rem;
 }
 

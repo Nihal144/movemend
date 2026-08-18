@@ -1,5 +1,6 @@
 "use client";
 
+import { createLocalStore } from "./local-store";
 import type { Answers } from "./questions";
 
 export type Profile = {
@@ -7,76 +8,27 @@ export type Profile = {
   completedAt: string;
 };
 
-const KEY = "movemend.profile.v1";
+const store = createLocalStore<Profile>("movemend.profile.v1", (value) => {
+  const profile = value as Profile;
+  return profile && typeof profile === "object" && profile.answers ? profile : null;
+});
 
-const listeners = new Set<() => void>();
-
-// useSyncExternalStore requires a referentially stable snapshot, so the parsed
-// profile is cached and only rebuilt when the raw string actually changes.
-let cachedRaw: string | null = null;
-let cachedProfile: Profile | null = null;
-
-function parse(raw: string | null): Profile | null {
-  if (!raw) return null;
-  try {
-    const parsed = JSON.parse(raw) as Profile;
-    return parsed && typeof parsed === "object" && parsed.answers ? parsed : null;
-  } catch {
-    return null;
-  }
-}
-
-function emit() {
-  for (const listener of listeners) listener();
-}
-
-export function subscribeProfile(listener: () => void) {
-  listeners.add(listener);
-  // Keep other tabs in sync when the profile is saved or cleared.
-  window.addEventListener("storage", listener);
-  return () => {
-    listeners.delete(listener);
-    window.removeEventListener("storage", listener);
-  };
-}
-
-export function getProfileSnapshot(): Profile | null {
-  if (typeof window === "undefined") return null;
-  let raw: string | null = null;
-  try {
-    raw = window.localStorage.getItem(KEY);
-  } catch {
-    return null;
-  }
-  if (raw !== cachedRaw) {
-    cachedRaw = raw;
-    cachedProfile = parse(raw);
-  }
-  return cachedProfile;
-}
+export const subscribeProfile = store.subscribe;
+export const getProfileSnapshot = store.getSnapshot;
+export const getProfileServerSnapshot = store.getServerSnapshot;
 
 export function loadProfile(): Profile | null {
-  return getProfileSnapshot();
+  return store.getSnapshot();
 }
 
 export function saveProfile(answers: Answers): Profile {
   const profile: Profile = { answers, completedAt: new Date().toISOString() };
-  try {
-    window.localStorage.setItem(KEY, JSON.stringify(profile));
-  } catch {
-    // Private-mode quota failures shouldn't block the user from continuing.
-  }
-  emit();
+  store.set(profile);
   return profile;
 }
 
 export function clearProfile() {
-  try {
-    window.localStorage.removeItem(KEY);
-  } catch {
-    // Nothing to do — the profile is already unreachable.
-  }
-  emit();
+  store.clear();
 }
 
 export function firstName(profile: Profile | null): string | null {
