@@ -1,4 +1,5 @@
 import type { PoseKey, Tone } from "@/components/pose-avatar";
+import { exerciseMediaUrl } from "./images";
 import { POSE_TONES } from "@/components/pose-avatar";
 
 export type BreathKey =
@@ -201,6 +202,11 @@ export const EXERCISES: Record<ExerciseKey, Exercise> = {
 
 export function exerciseFor(key: ExerciseKey): Exercise {
   return EXERCISES[key];
+}
+
+/** Demo clip for an exercise: the registry wins, then any inline default. */
+export function mediaFor(key: ExerciseKey): string | undefined {
+  return exerciseMediaUrl(key) ?? EXERCISES[key].media;
 }
 
 export function exerciseTone(key: ExerciseKey): Tone {

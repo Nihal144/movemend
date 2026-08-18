@@ -2,7 +2,7 @@
 
 import { BreathPacer } from "@/components/breath-pacer";
 import { POSE_FIGURES } from "@/components/pose-avatar";
-import { exerciseFor, exerciseTone, type ExerciseKey } from "@/lib/exercises";
+import { exerciseFor, exerciseTone, mediaFor, type ExerciseKey } from "@/lib/exercises";
 
 /**
  * The demo panel at the top of the player. Breathing exercises get a live
@@ -13,13 +13,15 @@ export function ExerciseMedia({ exercise: key, paused }: { exercise: ExerciseKey
   const exercise = exerciseFor(key);
   const tone = exerciseTone(key);
 
-  if (exercise.media) {
-    const isVideo = /\.(mp4|webm)$/i.test(exercise.media);
+  const media = mediaFor(key);
+
+  if (media) {
+    const isVideo = /\.(mp4|webm)$/i.test(media);
     return (
       <div className={`${tone.bg} aspect-square w-full overflow-hidden rounded-card`}>
         {isVideo ? (
           <video
-            src={exercise.media}
+            src={media}
             className="size-full object-cover"
             autoPlay
             loop
@@ -30,7 +32,7 @@ export function ExerciseMedia({ exercise: key, paused }: { exercise: ExerciseKey
         ) : (
           // eslint-disable-next-line @next/next/no-img-element -- animated GIF; next/image would freeze it
           <img
-            src={exercise.media}
+            src={media}
             alt={`${exercise.name} demonstration`}
             className="size-full object-cover"
           />
