@@ -16,7 +16,7 @@ export const PROGRAM_IMAGES: Record<string, string | undefined> = {
 export const EXERCISE_MEDIA: Record<string, string | undefined> = {
   "chair-squat": "https://ik.imagekit.io/xpmg4xpua/Movemend/chair-squat.mp4",
   bridge: "https://ik.imagekit.io/xpmg4xpua/Movemend/Bridge.mp4",
-  // "bird-dog": "…",
+  "bird-dog": "https://ik.imagekit.io/xpmg4xpua/Movemend/Bird-dog.mp4",
   // "hip-hinge": "…",
   // "carry-march": "…",
 };
