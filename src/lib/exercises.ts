@@ -1,16 +1,43 @@
-import type { PoseKey } from "@/components/pose-avatar";
+import type { PoseKey, Tone } from "@/components/pose-avatar";
+import { POSE_TONES } from "@/components/pose-avatar";
+
+export type BreathKey =
+  | "diaphragmatic"
+  | "four-six"
+  | "box-gentle"
+  | "pursed-lip"
+  | "long-exhale";
+
+export type ExerciseKey = PoseKey | BreathKey;
+
+/**
+ * One step of a breathing cycle. `scale` is where the pacer circle should be by
+ * the end of the phase, so inhale grows, exhale shrinks and holds sit still.
+ */
+export type BreathPhase = {
+  label: string;
+  seconds: number;
+  scale: number;
+};
 
 export type Exercise = {
   name: string;
   description: string;
-  /**
-   * Optional looping demo (GIF/MP4) served from /public. When absent the
-   * player falls back to the animated pose illustration.
-   */
+  /** Optional looping demo (GIF/MP4) from /public; overrides the illustration. */
   media?: string;
+  /** Pose exercises render the figure illustration. */
+  pose?: PoseKey;
+  /** Breathing exercises render a paced circle instead. */
+  breath?: BreathPhase[];
+  tone?: Tone;
 };
 
-export const EXERCISES: Record<PoseKey, Exercise> = {
+const IN = (seconds: number): BreathPhase => ({ label: "Inhale", seconds, scale: 1 });
+const OUT = (seconds: number): BreathPhase => ({ label: "Exhale", seconds, scale: 0.55 });
+const HOLD = (seconds: number): BreathPhase => ({ label: "Hold", seconds, scale: 1 });
+const PAUSE = (seconds: number): BreathPhase => ({ label: "Pause", seconds, scale: 0.55 });
+
+const POSE_EXERCISES: Record<PoseKey, Omit<Exercise, "pose">> = {
   child: {
     name: "Child's Pose",
     description:
@@ -63,6 +90,58 @@ export const EXERCISES: Record<PoseKey, Exercise> = {
   },
 };
 
-export function exerciseFor(pose: PoseKey): Exercise {
-  return EXERCISES[pose];
+const BREATH_EXERCISES: Record<BreathKey, Exercise> = {
+  diaphragmatic: {
+    name: "Diaphragmatic Breathing",
+    description:
+      "Sit or stand tall. Inhale slowly through the nose for about 4 seconds, letting the belly expand rather than the chest. Exhale gently for about 6 seconds.",
+    breath: [IN(4), OUT(6)],
+    tone: { bg: "bg-pose-sky", ink: "stroke-ink" },
+  },
+  "four-six": {
+    name: "4–6 Breathing",
+    description:
+      "Inhale through the nose for 4 seconds, then exhale for 6. Keep your shoulders relaxed and aim for around 6 breaths a minute.",
+    breath: [IN(4), OUT(6)],
+    tone: { bg: "bg-pose-moss", ink: "stroke-ink" },
+  },
+  "box-gentle": {
+    name: "Box Breathing — Gentle",
+    description:
+      "Inhale for 4, hold for 2, exhale for 4–6, then pause for 2. Keep every phase comfortable — no forceful breath-holding.",
+    breath: [IN(4), HOLD(2), OUT(5), PAUSE(2)],
+    tone: { bg: "bg-pose-lilac", ink: "stroke-ink" },
+  },
+  "pursed-lip": {
+    name: "Pursed-Lip Breathing",
+    description:
+      "Inhale through the nose for 3–4 seconds, then exhale slowly through lightly pursed lips for 5–6 seconds, as if cooling a hot drink.",
+    breath: [IN(4), OUT(6)],
+    tone: { bg: "bg-pose-sand", ink: "stroke-ink" },
+  },
+  "long-exhale": {
+    name: "Long-Exhale Relaxation",
+    description:
+      "A comfortable nasal inhale followed by a longer, relaxed exhale. Focus on dropping your shoulders and unclenching your jaw.",
+    breath: [IN(4), OUT(8)],
+    tone: { bg: "bg-pose-slate", ink: "stroke-white" },
+  },
+};
+
+export const EXERCISES: Record<ExerciseKey, Exercise> = {
+  ...(Object.fromEntries(
+    Object.entries(POSE_EXERCISES).map(([key, value]) => [
+      key,
+      { ...value, pose: key as PoseKey, tone: POSE_TONES[key as PoseKey] },
+    ]),
+  ) as Record<PoseKey, Exercise>),
+  ...BREATH_EXERCISES,
+};
+
+export function exerciseFor(key: ExerciseKey): Exercise {
+  return EXERCISES[key];
+}
+
+export function exerciseTone(key: ExerciseKey): Tone {
+  return EXERCISES[key].tone ?? { bg: "bg-canvas", ink: "stroke-ink" };
 }

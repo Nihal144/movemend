@@ -17,9 +17,9 @@ export function SessionPlayer({ program, session }: { program: Program; session:
   const [paused, setPaused] = useState(false);
   const [finished, setFinished] = useState(false);
 
-  const total = session.poses.length;
-  const pose = session.poses[index];
-  const exercise = exerciseFor(pose);
+  const total = session.exercises.length;
+  const current = session.exercises[index];
+  const exercise = exerciseFor(current);
 
   const advance = useCallback(() => {
     if (index + 1 < total) {
@@ -67,7 +67,7 @@ export function SessionPlayer({ program, session }: { program: Program; session:
         </button>
 
         <ol className="flex flex-1 gap-1.5" aria-label={`Exercise ${index + 1} of ${total}`}>
-          {session.poses.map((_, i) => (
+          {session.exercises.map((_, i) => (
             <li
               key={i}
               className={`h-1.5 flex-1 rounded-full ${i <= index ? "bg-ink" : "bg-hairline"}`}
@@ -81,7 +81,7 @@ export function SessionPlayer({ program, session }: { program: Program; session:
       </header>
 
       <div className="pt-5">
-        <ExerciseMedia pose={pose} />
+        <ExerciseMedia exercise={current} paused={paused} />
       </div>
 
       {/* Keyed on the exercise so each one starts a fresh timer. */}

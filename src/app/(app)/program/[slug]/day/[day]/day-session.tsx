@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { PoseAvatar } from "@/components/pose-avatar";
+import { ExerciseAvatar } from "@/components/exercise-avatar";
 import { exerciseFor } from "@/lib/exercises";
 import { formatClock } from "@/lib/format";
 import { sessionMinutes, type Program, type ProgramDay } from "@/lib/programs";
@@ -23,7 +23,7 @@ export function DaySession({ program, session }: { program: Program; session: Pr
       <h1 className="mt-1 text-4xl font-bold tracking-tight">{session.title}</h1>
       <p className="mt-3 text-[15px] text-muted">{session.focus}</p>
       <p className="mt-1 text-[15px] text-muted">
-        {session.poses.length} exercises · {formatClock(session.seconds)} each ·{" "}
+        {session.exercises.length} exercises · {formatClock(session.seconds)} each ·{" "}
         {sessionMinutes(session)} min total
       </p>
 
@@ -34,14 +34,14 @@ export function DaySession({ program, session }: { program: Program; session: Pr
       )}
 
       <ol className="mt-8 flex flex-col gap-2.5">
-        {session.poses.map((pose, i) => {
-          const exercise = exerciseFor(pose);
+        {session.exercises.map((key, i) => {
+          const exercise = exerciseFor(key);
           return (
             <li
-              key={`${pose}-${i}`}
+              key={`${key}-${i}`}
               className="flex items-center gap-4 rounded-2xl border border-hairline bg-surface p-3"
             >
-              <PoseAvatar pose={pose} className="size-14" />
+              <ExerciseAvatar exercise={key} className="size-14" />
               <div className="min-w-0">
                 <p className="font-semibold leading-tight">{exercise.name}</p>
                 <p className="text-sm text-muted">{formatClock(session.seconds)}</p>

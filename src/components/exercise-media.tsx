@@ -1,14 +1,17 @@
-import { POSE_FIGURES, POSE_TONES, type PoseKey } from "@/components/pose-avatar";
-import { exerciseFor } from "@/lib/exercises";
+"use client";
+
+import { BreathPacer } from "@/components/breath-pacer";
+import { POSE_FIGURES } from "@/components/pose-avatar";
+import { exerciseFor, exerciseTone, type ExerciseKey } from "@/lib/exercises";
 
 /**
- * The demo panel at the top of the player. Real looping footage is used when an
- * exercise declares `media`; otherwise the pose illustration animates in place,
- * so a session is fully usable offline with no video assets shipped.
+ * The demo panel at the top of the player. Breathing exercises get a live
+ * pacer, pose exercises an animated illustration, and either is replaced by
+ * real looping footage when the exercise declares `media`.
  */
-export function ExerciseMedia({ pose }: { pose: PoseKey }) {
-  const exercise = exerciseFor(pose);
-  const tone = POSE_TONES[pose];
+export function ExerciseMedia({ exercise: key, paused }: { exercise: ExerciseKey; paused: boolean }) {
+  const exercise = exerciseFor(key);
+  const tone = exerciseTone(key);
 
   if (exercise.media) {
     const isVideo = /\.(mp4|webm)$/i.test(exercise.media);
@@ -36,6 +39,10 @@ export function ExerciseMedia({ pose }: { pose: PoseKey }) {
     );
   }
 
+  if (exercise.breath) {
+    return <BreathPacer phases={exercise.breath} paused={paused} tone={tone} />;
+  }
+
   return (
     <div
       className={`${tone.bg} grid aspect-square w-full place-items-center rounded-card`}
@@ -50,7 +57,7 @@ export function ExerciseMedia({ pose }: { pose: PoseKey }) {
         strokeLinejoin="round"
         aria-hidden="true"
       >
-        {POSE_FIGURES[pose]}
+        {exercise.pose && POSE_FIGURES[exercise.pose]}
       </svg>
     </div>
   );

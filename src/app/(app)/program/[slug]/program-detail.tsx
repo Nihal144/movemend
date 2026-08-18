@@ -88,7 +88,7 @@ export function ProgramDetail({ program, days }: { program: Program; days: Progr
               <span className="min-w-0 flex-1">
                 <span className="block font-semibold leading-tight">{day.title}</span>
                 <span className="mt-0.5 block text-sm text-muted">
-                  {day.focus} · {day.poses.length} exercises · {sessionMinutes(day)} min
+                  {day.focus} · {day.exercises.length} exercises · {sessionMinutes(day)} min
                 </span>
               </span>
               {isNext && (
