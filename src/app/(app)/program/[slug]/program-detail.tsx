@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { Program, ProgramDay, ProgramTone } from "@/lib/programs";
+import { sessionMinutes, type Program, type ProgramDay, type ProgramTone } from "@/lib/programs";
 import { useProgramProgress } from "@/lib/progress";
 
 const TONES: Record<ProgramTone, { wash: string; ink: string }> = {
@@ -88,7 +88,7 @@ export function ProgramDetail({ program, days }: { program: Program; days: Progr
               <span className="min-w-0 flex-1">
                 <span className="block font-semibold leading-tight">{day.title}</span>
                 <span className="mt-0.5 block text-sm text-muted">
-                  {day.focus} · {day.holdSeconds}s holds
+                  {day.focus} · {day.poses.length} exercises · {sessionMinutes(day)} min
                 </span>
               </span>
               {isNext && (

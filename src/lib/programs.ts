@@ -29,12 +29,14 @@ export type Program = {
 export type ProgramDay = Session & {
   day: number;
   week: number;
-  holdSeconds: number;
+  /** Seconds spent on each exercise in this session. */
+  seconds: number;
 };
 
 const WEEK = 7;
-const BASE_HOLD = 40;
-const PROGRESSED_HOLD = 55;
+/** Each exercise runs two minutes; week two adds thirty seconds. */
+const BASE_SECONDS = 120;
+const PROGRESSED_SECONDS = 150;
 
 export const PROGRAMS: Program[] = [
   {
@@ -49,13 +51,13 @@ export const PROGRAMS: Program[] = [
     goals: ["pain", "mobility"],
     areas: ["lower-back", "hips"],
     block: [
-      { title: "Decompress", focus: "Take the load off the spine", poses: ["child", "supine", "bridge", "twist", "cobra"] },
-      { title: "Hinge and Hold", focus: "Teach the hips to lead", poses: ["fold", "lunge", "bridge", "downdog", "child"] },
-      { title: "Gentle Extension", focus: "Open the front line", poses: ["cobra", "bridge", "reach", "lunge", "supine"] },
-      { title: "Rotation", focus: "Restore twist through the mid-back", poses: ["twist", "seated", "supine", "child", "cobra"] },
-      { title: "Posterior Chain", focus: "Wake up glutes and hamstrings", poses: ["bridge", "fold", "downdog", "lunge", "supine"] },
-      { title: "Carry Prep", focus: "Brace before you lift", poses: ["bridge", "cobra", "lunge", "reach", "twist"] },
-      { title: "Reset", focus: "Settle everything down", poses: ["child", "supine", "seated", "twist", "fold"] },
+      { title: "Decompress", focus: "Take the load off the spine", poses: ["child", "supine", "bridge", "twist", "cobra", "seated", "fold"] },
+      { title: "Hinge and Hold", focus: "Teach the hips to lead", poses: ["fold", "lunge", "bridge", "downdog", "child", "reach", "supine"] },
+      { title: "Gentle Extension", focus: "Open the front line", poses: ["cobra", "bridge", "reach", "lunge", "supine", "child", "twist"] },
+      { title: "Rotation", focus: "Restore twist through the mid-back", poses: ["twist", "seated", "supine", "child", "cobra", "bridge", "fold"] },
+      { title: "Posterior Chain", focus: "Wake up glutes and hamstrings", poses: ["bridge", "fold", "downdog", "lunge", "supine", "child", "seated"] },
+      { title: "Carry Prep", focus: "Brace before you lift", poses: ["bridge", "cobra", "lunge", "reach", "twist", "downdog", "child"] },
+      { title: "Reset", focus: "Settle everything down", poses: ["child", "supine", "seated", "twist", "fold", "bridge", "cobra"] },
     ],
   },
   {
@@ -70,13 +72,13 @@ export const PROGRAMS: Program[] = [
     goals: ["strength"],
     areas: ["lower-back", "posture"],
     block: [
-      { title: "Deep Core", focus: "Find the brace", poses: ["supine", "bridge", "child", "cobra", "seated"] },
-      { title: "Anti-Rotation", focus: "Resist the twist", poses: ["twist", "bridge", "lunge", "reach", "supine"] },
-      { title: "Hip Hinge", focus: "Lift from the hips, not the back", poses: ["fold", "lunge", "bridge", "downdog", "seated"] },
-      { title: "Overhead", focus: "Strength above your head", poses: ["reach", "cobra", "lunge", "downdog", "twist"] },
-      { title: "Split Stance", focus: "Steady on one leg", poses: ["lunge", "reach", "bridge", "fold", "child"] },
-      { title: "Full Chain", focus: "Link top to bottom", poses: ["downdog", "cobra", "bridge", "lunge", "reach"] },
-      { title: "Recover", focus: "Let the work consolidate", poses: ["child", "supine", "seated", "twist", "fold"] },
+      { title: "Deep Core", focus: "Find the brace", poses: ["supine", "bridge", "child", "cobra", "seated", "twist", "fold"] },
+      { title: "Anti-Rotation", focus: "Resist the twist", poses: ["twist", "bridge", "lunge", "reach", "supine", "downdog", "child"] },
+      { title: "Hip Hinge", focus: "Lift from the hips, not the back", poses: ["fold", "lunge", "bridge", "downdog", "seated", "cobra", "supine"] },
+      { title: "Overhead", focus: "Strength above your head", poses: ["reach", "cobra", "lunge", "downdog", "twist", "bridge", "child"] },
+      { title: "Split Stance", focus: "Steady on one leg", poses: ["lunge", "reach", "bridge", "fold", "child", "supine", "seated"] },
+      { title: "Full Chain", focus: "Link top to bottom", poses: ["downdog", "cobra", "bridge", "lunge", "reach", "twist", "fold"] },
+      { title: "Recover", focus: "Let the work consolidate", poses: ["child", "supine", "seated", "twist", "fold", "bridge", "cobra"] },
     ],
   },
   {
@@ -93,13 +95,13 @@ export const PROGRAMS: Program[] = [
     caution:
       "This supports a healthy routine — it isn't a treatment. Keep taking any medication as prescribed, and talk to your doctor before changing how you manage your blood pressure.",
     block: [
-      { title: "Long Exhale", focus: "Slow the breath down", poses: ["supine", "child", "seated", "twist", "bridge"] },
-      { title: "Easy Flow", focus: "Keep moving, keep it light", poses: ["reach", "fold", "downdog", "lunge", "cobra"] },
-      { title: "Open Chest", focus: "Room to breathe", poses: ["cobra", "reach", "bridge", "twist", "supine"] },
-      { title: "Legs Up", focus: "Let circulation do the work", poses: ["supine", "bridge", "child", "seated", "fold"] },
-      { title: "Steady Rhythm", focus: "Gentle repeats, no rush", poses: ["fold", "reach", "lunge", "downdog", "child"] },
-      { title: "Unwind Shoulders", focus: "Release what you hold up top", poses: ["twist", "reach", "seated", "cobra", "supine"] },
-      { title: "Stillness", focus: "End slow", poses: ["child", "supine", "seated", "twist", "fold"] },
+      { title: "Long Exhale", focus: "Slow the breath down", poses: ["supine", "child", "seated", "twist", "bridge", "fold", "reach"] },
+      { title: "Easy Flow", focus: "Keep moving, keep it light", poses: ["reach", "fold", "downdog", "lunge", "cobra", "child", "supine"] },
+      { title: "Open Chest", focus: "Room to breathe", poses: ["cobra", "reach", "bridge", "twist", "supine", "child", "seated"] },
+      { title: "Legs Up", focus: "Let circulation do the work", poses: ["supine", "bridge", "child", "seated", "fold", "twist", "reach"] },
+      { title: "Steady Rhythm", focus: "Gentle repeats, no rush", poses: ["fold", "reach", "lunge", "downdog", "child", "bridge", "supine"] },
+      { title: "Unwind Shoulders", focus: "Release what you hold up top", poses: ["twist", "reach", "seated", "cobra", "supine", "child", "fold"] },
+      { title: "Stillness", focus: "End slow", poses: ["child", "supine", "seated", "twist", "fold", "bridge", "cobra"] },
     ],
   },
 ];
@@ -121,7 +123,7 @@ export function expandSessions(program: Program): ProgramDay[] {
       ...session,
       day,
       week,
-      holdSeconds: week === 1 ? BASE_HOLD : PROGRESSED_HOLD,
+      seconds: week === 1 ? BASE_SECONDS : PROGRESSED_SECONDS,
     };
   });
 }
@@ -135,4 +137,9 @@ export function rankPrograms(goal: string | undefined, areas: string[]): Program
     (goal && program.goals.includes(goal) ? 2 : 0) +
     program.areas.filter((area) => areas.includes(area)).length;
   return [...PROGRAMS].sort((a, b) => score(b) - score(a));
+}
+
+/** Total minutes for a session, rounded for display. */
+export function sessionMinutes(day: ProgramDay): number {
+  return Math.round((day.poses.length * day.seconds) / 60);
 }

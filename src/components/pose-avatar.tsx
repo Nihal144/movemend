@@ -12,10 +12,10 @@ export type PoseKey =
   | "seated"
   | "supine";
 
-type Tone = { bg: string; ink: string };
+export type Tone = { bg: string; ink: string };
 
 /** Each pose owns a tone so the same movement reads consistently everywhere. */
-const TONES: Record<PoseKey, Tone> = {
+export const POSE_TONES: Record<PoseKey, Tone> = {
   downdog: { bg: "bg-pose-sage", ink: "stroke-white" },
   fold: { bg: "bg-pose-brick", ink: "stroke-white" },
   child: { bg: "bg-pose-sand", ink: "stroke-ink" },
@@ -29,7 +29,7 @@ const TONES: Record<PoseKey, Tone> = {
 };
 
 /** Simplified stroke figures — a mat line plus a body, drawn in a 48px box. */
-const FIGURES: Record<PoseKey, ReactNode> = {
+export const POSE_FIGURES: Record<PoseKey, ReactNode> = {
   downdog: (
     <>
       <path d="M11 37 L24 15 L37 37" />
@@ -99,7 +99,7 @@ export function PoseAvatar({
   pose: PoseKey;
   className?: string;
 }) {
-  const tone = TONES[pose];
+  const tone = POSE_TONES[pose];
   return (
     <span
       className={`${tone.bg} ${className} inline-flex shrink-0 items-center justify-center rounded-full`}
@@ -112,7 +112,7 @@ export function PoseAvatar({
         strokeLinejoin="round"
         aria-hidden="true"
       >
-        {FIGURES[pose]}
+        {POSE_FIGURES[pose]}
       </svg>
     </span>
   );

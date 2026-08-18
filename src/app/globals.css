@@ -77,3 +77,25 @@ body {
     animation: none;
   }
 }
+
+/* Looping demo motion for the session player's pose illustration. */
+@keyframes pose-breathe {
+  0%,
+  100% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.045) translateY(-2%);
+  }
+}
+
+.pose-breathe {
+  animation: pose-breathe 3.4s ease-in-out infinite;
+  transform-origin: 50% 65%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pose-breathe {
+    animation: none;
+  }
+}
